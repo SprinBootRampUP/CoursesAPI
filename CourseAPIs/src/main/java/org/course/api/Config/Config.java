@@ -28,8 +28,8 @@ public class Config {
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
-                                .decoder(jwtDecoder()) // Set the custom JwtDecoder
-                                .jwtAuthenticationConverter(jwtAuthenticationConverter()) // Set the custom converter
+                                .decoder(jwtDecoder())
+                                .jwtAuthenticationConverter(jwtAuthenticationConverter())
                         ));
         return httpSecurity.build();
 

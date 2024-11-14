@@ -1,5 +1,6 @@
 package org.course.api.Service;
 
+import Utils.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.course.api.DTOS.CourseDTO;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,7 +63,8 @@ public class CourseService {
 
         course.setSections(sections);
 
-        Long  author_id = getIdFromToken(authentication);
+        Long  author_id = Utils.getIdFromToken(authentication);
+
 
         course.setAuthor_id(author_id);
         course.setApproved(false);
@@ -72,14 +73,6 @@ public class CourseService {
 
     }
 
-
-
-     public  Long getIdFromToken( Authentication authentication ){
-         Jwt jwt = (Jwt) authentication.getPrincipal();
-         Long userId =  (Long) jwt.getClaims().get("userId");
-         return userId;
-
-     }
 
     @Transactional
     public  List<CourseDTO>  getCourses(){
