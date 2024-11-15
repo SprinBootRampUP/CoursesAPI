@@ -6,7 +6,6 @@ import lombok.EqualsAndHashCode;
 import java.util.Date;
 
 @MappedSuperclass
-@EqualsAndHashCode
 public abstract class BaseEntity {
 
 @Id

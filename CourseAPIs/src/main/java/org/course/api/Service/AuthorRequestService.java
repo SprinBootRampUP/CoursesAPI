@@ -61,12 +61,10 @@ public class AuthorRequestService {
                     System.out.println("Author role approved: " + response);
                 },
                 error -> {
-                    if (error != null) {
                         WebClientResponseException webClientError = (WebClientResponseException) error;
                         System.err.println("Error from OAuth server: " + webClientError.getStatusCode());
-                    } else {
                         System.err.println("Error: " + error.getMessage());
-                    }
+
                 }
         );
     }

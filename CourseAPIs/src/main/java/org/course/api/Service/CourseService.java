@@ -31,6 +31,8 @@ public class CourseService {
 
         Course course = new Course();
         course.setCourseTitle(courseDTO.getCourseTitle());
+      //  course.setCourseTitle(courseDTO.getCourseTitle()).setDescription("desc");
+
         course.setDescription(courseDTO.getDescription());
         course.setCourseLevel(courseDTO.getCourseLevel());
         course.setPrice(courseDTO.getPrice());

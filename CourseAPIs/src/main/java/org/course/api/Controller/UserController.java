@@ -26,7 +26,7 @@ public class UserController {
     @Autowired
     private AuthorRequestService authorRequestService;
 
-    @PostMapping("/requestauthorrole")
+    @PostMapping("/request-author-role")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ApiResponse> requestAuthorRole(Authentication authentication){
         try{
@@ -36,6 +36,19 @@ public class UserController {
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).body( new ApiResponse( e.getMessage(),null));
         }
     }
+
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/authorRequests")
+    public ResponseEntity<ApiResponse> authorRequests(){
+        try{
+            List<AuthorRequest> authorRequests= authorRequestService.authorRequests();
+            return  ResponseEntity.ok( new ApiResponse("Pending Author approvals" , authorRequests));
+        } catch (Exception e) {
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body( new ApiResponse( e.getMessage(),null));
+        }
+    }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/approve")
@@ -48,16 +61,7 @@ public class UserController {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/authorRequests")
-    public ResponseEntity<ApiResponse> authorRequests(){
-        try{
-            List<AuthorRequest> authorRequests= authorRequestService.authorRequests();
-            return  ResponseEntity.ok( new ApiResponse("Pending Author approvals" , authorRequests));
-        } catch (Exception e) {
-            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body( new ApiResponse( e.getMessage(),null));
-        }
-    }
+
 
 
 }

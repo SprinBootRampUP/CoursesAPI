@@ -1,12 +1,14 @@
 package Utils;
 
 
+import lombok.experimental.UtilityClass;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 
+@UtilityClass
 public class Utils {
 
-    public  static Long getIdFromToken( Authentication authentication ){
+    public   Long getIdFromToken( Authentication authentication ){
         Jwt jwt = (Jwt) authentication.getPrincipal();
         Long userId =  (Long) jwt.getClaims().get("userId");
         return userId;
