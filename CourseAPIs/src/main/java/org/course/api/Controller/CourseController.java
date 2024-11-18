@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/course")
 public class CourseController {
 
@@ -39,6 +39,7 @@ public class CourseController {
 
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER') or hasRole('AUTHOR')")
     public ResponseEntity<ApiResponse> getCourses(){
         try{
             List<CourseDTO> courses=courseService.getCourses();

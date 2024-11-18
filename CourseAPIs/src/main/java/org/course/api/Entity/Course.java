@@ -1,8 +1,8 @@
 package org.course.api.Entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.Fetch;
@@ -22,7 +22,8 @@ public class Course extends  BaseEntity {
     @Basic(optional = false)
     private String courseTitle;
 
-    @Column( columnDefinition = "VARCHAR(255) default 'Welcome to my course'")
+    @Column( columnDefinition = "VARCHAR(255) DEFAULT 'Welcome to my course'")
+    @NotNull
     private String description;
 
     @Enumerated(EnumType.STRING)

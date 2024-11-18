@@ -14,7 +14,7 @@ public class Utils {
         return userId;
     }
 
-    public  static String getToken( Authentication authentication ){
+    public   String getToken( Authentication authentication ){
         Jwt jwt = (Jwt) authentication.getPrincipal();
         return jwt.getTokenValue();
     }

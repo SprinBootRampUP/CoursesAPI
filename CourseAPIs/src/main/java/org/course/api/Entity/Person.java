@@ -1,13 +1,21 @@
 package org.course.api.Entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.With;
 import lombok.experimental.ExtensionMethod;
 
 @ExtensionMethod({Extension.class})
 public class Person  {
-    @With private final String name;
-    @With private final int age;
+   // @With
+    private final String name;
+   // @With
+    private final int age;
 
+    @Getter(onMethod_={@Id, @Column(name="unique-id")})
+    int id;
     public Person(String name, int age) {
         this.name = name;
         this.age = age;

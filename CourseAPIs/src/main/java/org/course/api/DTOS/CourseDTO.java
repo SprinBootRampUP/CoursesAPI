@@ -10,13 +10,10 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CourseDTO {
 
-    private Long id;
     private String courseTitle;
     private String description;
     private CourseLevel courseLevel;
     private String price;
-    private boolean approved;
-    private Long author_id;
     private List<SectionDTO> sections;
 
 
