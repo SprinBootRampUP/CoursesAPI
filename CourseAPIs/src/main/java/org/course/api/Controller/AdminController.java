@@ -1,24 +1,21 @@
 package org.course.api.Controller;
 
 import org.course.api.DTOS.ApiResponse;
-import org.course.api.DTOS.CourseDTO;
 import org.course.api.Entity.AuthorRequest;
 import org.course.api.Repository.AuthorRequestRepository;
 import org.course.api.Service.AuthorRequestService;
-import org.course.api.Service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("api/admin")
-public class UserController {
+public class AdminController {
 
     @Autowired
     private AuthorRequestRepository authorRequestRepository;

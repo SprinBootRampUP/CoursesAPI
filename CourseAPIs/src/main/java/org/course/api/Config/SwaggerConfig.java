@@ -17,10 +17,20 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
-                .group("public")
-                .pathsToMatch("/**")
+                .group("Courses")
+                .pathsToMatch("/api/course/**")
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi secondControllerApi() {
+        return GroupedOpenApi.builder()
+                .group("Admin")
+                .pathsToMatch("/api/admin/**")
+                .build();
+    }
+
+
 
     private SecurityScheme createAPIKeyScheme() {
         return new SecurityScheme().type(SecurityScheme.Type.HTTP)
