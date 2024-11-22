@@ -1,7 +1,9 @@
 package org.course.api.Controller;
 
+import jakarta.validation.ConstraintViolationException;
 import org.course.api.DTOS.ApiResponse;
 import org.course.api.DTOS.CourseDTO;
+import org.course.api.Entity.ApprovalStatus;
 import org.course.api.Entity.Course;
 import org.course.api.Service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +29,10 @@ public class CourseController {
 
         try{
             courseService.CreateCourse(courseDTO , authentication);
-
             return  ResponseEntity.ok( new ApiResponse("Courses Created Successfully" , null));
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
 
@@ -50,11 +49,11 @@ public class CourseController {
     }
 
 
-    @GetMapping("/unapproved")
+    @GetMapping("/status")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse> getUnapprovedCourses(){
+    public ResponseEntity<ApiResponse> getCoursesStatus( @RequestParam String approvalStatus){
         try{
-            List<CourseDTO> courses=courseService.getUnapprovedCourses();
+            List<CourseDTO> courses=courseService.getCoursesStatus(   ApprovalStatus.valueOf(approvalStatus) );
             return  ResponseEntity.ok( new ApiResponse("Courses Fetched Successfully" , courses));
         } catch (Exception e) {
             throw new RuntimeException(e);

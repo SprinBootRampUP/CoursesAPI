@@ -64,13 +64,8 @@ public class CourseService {
         }
 
         course.setSections(sections);
-
         Long  author_id = Utils.getIdFromToken(authentication);
-
-
         course.setAuthor_id(author_id);
-        course.setApproved(false);
-
         courseRepository.save(course);
 
     }
@@ -87,8 +82,8 @@ public class CourseService {
     }
 
     @Transactional
-    public  List<CourseDTO>  getUnapprovedCourses(){
-        List<Course> courses = courseRepository.findByApprovedFalse();
+    public  List<CourseDTO>  getCoursesStatus(ApprovalStatus approvalStatus){
+        List<Course> courses = courseRepository.findByApprovalStatus(approvalStatus);
 
         return courses.stream()
                 .map(this::convertToCourseDTO)

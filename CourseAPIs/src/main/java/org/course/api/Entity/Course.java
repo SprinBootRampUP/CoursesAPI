@@ -22,16 +22,18 @@ public class Course extends  BaseEntity {
     @Basic(optional = false)
     private String courseTitle;
 
-    @Column( columnDefinition = "VARCHAR(255) DEFAULT 'Welcome to my course'")
     @NotNull
     private String description;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private CourseLevel courseLevel;
 
+    @NotNull(message = "price cannot be null")
     private String price;
 
-    private boolean approved;
+    @Enumerated(EnumType.STRING)
+    private ApprovalStatus approvalStatus;
 
     private Long  author_id;
 
