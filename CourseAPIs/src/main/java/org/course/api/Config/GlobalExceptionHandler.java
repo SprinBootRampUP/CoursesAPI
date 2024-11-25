@@ -1,6 +1,8 @@
 package org.course.api.Config;
 
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -29,7 +31,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>>  handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
 
 
-        return ResponseEntity.badRequest().body(
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(
                 Map.of("error", "Course with this title already submitted")
                 );
     }
