@@ -18,13 +18,8 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     @Query("UPDATE Course c SET c.approvalStatus = :approvalStatus WHERE c.id = :courseId")
     void updateApprovalStatusByCourseId(@Param("courseId") Long courseId ,@Param("approvalStatus") ApprovalStatus approvalStatus);
 
-
    // List<Course>  findByApprovedFalse();
-
-
     List<Course> findByApprovalStatus(ApprovalStatus approvalStatus);
-
-
 
 
 }

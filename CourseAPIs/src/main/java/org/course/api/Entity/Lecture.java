@@ -5,10 +5,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
+@Accessors(chain = true)
 public class Lecture extends BaseEntity {
 
 

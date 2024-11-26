@@ -27,6 +27,15 @@ public class GlobalExceptionHandler {
           return ResponseEntity.badRequest().body(errors);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, String>> handleEnumViolation(IllegalArgumentException ex) {
+
+
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(
+                Map.of("error", "Invalid Course Status")
+        );
+    }
+
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity<Map<String, String>>  handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
 

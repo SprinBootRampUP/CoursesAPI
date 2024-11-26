@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Data
 @Table(name ="section")
+@Accessors(chain = true)
 public class Section extends BaseEntity {
 
 

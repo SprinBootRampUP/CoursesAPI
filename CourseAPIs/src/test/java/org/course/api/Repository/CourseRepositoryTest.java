@@ -6,13 +6,28 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.test.context.ActiveProfiles;
-
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.List;
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
+@DataJpaTest(properties = {
+        "spring.datasource.url=jdbc:mysql://localhost:3306/test_db",
+        " spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver",
+        " spring.datasource.username=root",
+        " spring.datasource.password=root",
+        "spring.jpa.hibernate.ddl-auto=create",
+        " spring.jpa.show-sql=true"
+})
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class CourseRepositoryTest {
+
+
+
+
+
 
     @Mock
     CourseRepository courseRepository;

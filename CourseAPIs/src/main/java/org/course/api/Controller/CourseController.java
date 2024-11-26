@@ -26,13 +26,8 @@ public class CourseController {
     @PostMapping("/create")
     @PreAuthorize("hasRole('AUTHOR')")
     public ResponseEntity<ApiResponse> createCourse(@RequestBody CourseDTO courseDTO, Authentication authentication){
-
-        try{
             courseService.CreateCourse(courseDTO , authentication);
             return  ResponseEntity.ok( new ApiResponse("Courses Created Successfully" , null));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
 
@@ -40,40 +35,24 @@ public class CourseController {
     @GetMapping
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER') or hasRole('AUTHOR')")
     public ResponseEntity<ApiResponse> getCourses(){
-        try{
             List<CourseDTO> courses=courseService.getCourses();
             return  ResponseEntity.ok( new ApiResponse("Courses Fetched Successfully" , courses));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
 
     @GetMapping("/status")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse> getCoursesStatus( @RequestParam String approvalStatus){
-        try{
-            List<CourseDTO> courses=courseService.getCoursesStatus(   ApprovalStatus.valueOf(approvalStatus) );
+    public ResponseEntity<ApiResponse> getCoursesStatus( @RequestParam ApprovalStatus approvalStatus){
+            List<CourseDTO> courses=courseService.getCoursesStatus( approvalStatus );
             return  ResponseEntity.ok( new ApiResponse("Courses Fetched Successfully" , courses));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
 
 
     @PutMapping("/approve")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse> approvecourse(@RequestParam Long courseId , String approvalStatus){
-        try{
-            courseService.approveCourse(courseId , ApprovalStatus.valueOf(approvalStatus));
+    public ResponseEntity<ApiResponse> approveCourse(@RequestParam Long courseId , ApprovalStatus approvalStatus){
+            courseService.approveCourse(courseId ,approvalStatus);
             return  ResponseEntity.ok( new ApiResponse("Courses Approved" , null));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-
     }
-
-
 }
