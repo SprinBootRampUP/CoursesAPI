@@ -98,7 +98,7 @@ public class CourseService {
      }
 
 
-    private CourseDTO convertToCourseDTO(Course course) {
+    public CourseDTO convertToCourseDTO(Course course) {
         return objectMapper.convertValue(course, CourseDTO.class);
     }
 
