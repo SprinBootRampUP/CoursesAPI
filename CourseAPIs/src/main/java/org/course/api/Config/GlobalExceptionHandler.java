@@ -1,6 +1,7 @@
 package org.course.api.Config;
 
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,14 +37,38 @@ public class GlobalExceptionHandler {
         );
     }
 
-    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public ResponseEntity<Map<String, String>>  handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
+//    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+//    public ResponseEntity<Map<String, String>>  handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
+//
+//
+//        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(
+//                Map.of("error", "Course with this title already submitted")
+//                );
+//    }
 
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, String>>  handleDataIntegrityViolationExceptionException(DataIntegrityViolationException ex) {
+
+//        System.out.println(ex.toString());
+//        System.out.println(ex.getCause().toString());
+        System.out.println("oooo"+ex.getMostSpecificCause().toString());
+//        System.out.println(ex.getLocalizedMessage());
+
+      String errorMessage = ex.getMostSpecificCause().getMessage();
+
+        if (errorMessage.contains("Duplicate entry")) {
+            errorMessage = "Course with this title already submitted";
+        }else {
+            System.out.println("err"+errorMessage);
+        }
 
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(
-                Map.of("error", "Course with this title already submitted")
-                );
+                Map.of("error", errorMessage)
+        );
     }
 
 
 }
+
+

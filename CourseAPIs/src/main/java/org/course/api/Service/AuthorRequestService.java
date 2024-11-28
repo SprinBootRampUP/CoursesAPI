@@ -26,12 +26,16 @@ import java.util.stream.Collectors;
 public class AuthorRequestService {
 
 
-    private final WebClient webClient;
+    private  WebClient webClient;
+    private  WebClient.Builder webClientBuilder;
 
-    @Autowired
-    public AuthorRequestService(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:3006/oauth/api").build();
-    }
+//
+//    @Autowired
+//    public AuthorRequestService(WebClient.Builder webClientBuilder) {
+//        this.webClientBuilder = webClientBuilder;
+//        this.webClient = webClientBuilder.baseUrl("http://localhost:3006/oauth/api").build();
+//
+//    }
 
 
     @Autowired
@@ -49,7 +53,7 @@ public class AuthorRequestService {
 
         String url = "/approve";
         String accessToken = Utils.getToken(authentication);
-
+        this.webClient = webClientBuilder.baseUrl("http://localhost:3006/oauth/api").build();
         Mono<String> responseMono = webClient.put()
                 .uri(uriBuilder -> uriBuilder.path(url).queryParam("id", id).build())
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)

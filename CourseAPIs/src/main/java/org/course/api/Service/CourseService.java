@@ -27,7 +27,7 @@ public class CourseService {
     private ObjectMapper objectMapper;
 
     @Transactional
-    public void CreateCourse( CourseDTO courseDTO, Authentication authentication) {
+    public void createCourse( CourseDTO courseDTO, Authentication authentication) {
 
         Course course = new Course();
         course.setCourseTitle(courseDTO.getCourseTitle());
@@ -68,7 +68,6 @@ public class CourseService {
         Long  author_id = Utils.getIdFromToken(authentication);
         course.setAuthor_id(author_id);
         courseRepository.save(course);
-
     }
 
 

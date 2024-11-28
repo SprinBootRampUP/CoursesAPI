@@ -26,7 +26,7 @@ public class CourseController {
     @PostMapping("/create")
     @PreAuthorize("hasRole('AUTHOR')")
     public ResponseEntity<ApiResponse> createCourse(@RequestBody CourseDTO courseDTO, Authentication authentication){
-            courseService.CreateCourse(courseDTO , authentication);
+            courseService.createCourse(courseDTO , authentication);
             return  ResponseEntity.ok( new ApiResponse("Courses Created Successfully" , null));
     }
 

@@ -106,7 +106,7 @@ public class CourseServiceTest {
         MockedStatic<Utils> mockedStatic = mockStatic(Utils.class);
         mockedStatic.when(() -> Utils.getIdFromToken(authentication))
                 .thenReturn(1L);
-        courseService.CreateCourse(courseDTO1,authentication);
+        courseService.createCourse(courseDTO1,authentication);
        verify(courseRepository).save(any(Course.class));
     }
 
