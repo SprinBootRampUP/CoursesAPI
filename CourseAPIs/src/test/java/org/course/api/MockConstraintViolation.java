@@ -4,6 +4,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Path;
 import jakarta.validation.metadata.ConstraintDescriptor;
 
+
 public class MockConstraintViolation implements ConstraintViolation<Object> {
     private final String propertyPath;
     private final String message;
@@ -43,6 +44,7 @@ public class MockConstraintViolation implements ConstraintViolation<Object> {
     public Path getPropertyPath() {
         return null;
     }
+
 
     @Override public Object getInvalidValue() { return null; }
     @Override public ConstraintDescriptor<?> getConstraintDescriptor() { return null; }

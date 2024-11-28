@@ -216,21 +216,60 @@ class CourseControllerTest {
     @WithMockUser(roles = "AUTHOR")
     void testCreateCourse_withNullDescription() throws Exception {
 
-      //  doThrow(new ConstraintViolationException(null)).when(courseService).createCourse(any(CourseDTO.class),any(Authentication.class));
+      //  doThrow(new ConstraintViolationException(null))  .when(courseService).createCourse(any(CourseDTO.class),any(Authentication.class));
 
         doThrow(new ConstraintViolationException(
-                "Validation failed",
+                "description",
                 Set.of(
-                        new MockConstraintViolation("title", "must not be null")
+                        new MockConstraintViolation("description", "must not be null")
                 )))
                 .when(courseService).createCourse(any(CourseDTO.class), any(Authentication.class));
 
         mockMvc.perform(post("/api/course/create")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(courseDTO1)))
-             //   .andExpect(status().i())
-                .andDo(MockMvcResultHandlers.print());
-             //   .andExpect(jsonPath("$.error").value("Course with this title already submitted") );
+                .andExpect(status().isNotAcceptable())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.description").value("must not be null") );
+
+    }
+
+
+    @Test
+    @WithMockUser(roles = "AUTHOR")
+    void testCreateCourse_withInvalidCourseLevel() throws Exception {
+
+          doThrow(new IllegalArgumentException("courseLevel")).when(courseService).createCourse(any(CourseDTO.class),any(Authentication.class));
+
+        mockMvc.perform(post("/api/course/create")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(courseDTO1)))
+                .andExpect(status().isNotAcceptable())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.error").value("Invalid Course Status") );
+
+    }
+
+    @Test
+    @WithMockUser(roles = "AUTHOR")
+    void testCreateCourse_withCourseTitleExceedsMaxLength() throws Exception {
+
+        doThrow(new IllegalArgumentException("null")).when(courseService).createCourse(any(CourseDTO.class),any(Authentication.class));
+
+        doThrow(new ConstraintViolationException(
+                "courseTitle",
+                Set.of(
+                        new MockConstraintViolation("description", "Title must be less than or equal to 50 characters")
+                )))
+                .when(courseService).createCourse(any(CourseDTO.class), any(Authentication.class));
+
+
+        mockMvc.perform(post("/api/course/create")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(courseDTO1)))
+                .andExpect(status().isNotAcceptable())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$.courseTitle").value("Title must be less than or equal to 50 characters") );
 
     }
 

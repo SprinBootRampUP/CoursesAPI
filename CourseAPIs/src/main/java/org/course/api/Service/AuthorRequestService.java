@@ -74,7 +74,7 @@ public class AuthorRequestService {
     }
 
 
-    public List<AuthorRequest> authorRequests(){
+    public List<AuthorRequest> getAuthorRequests(){
        return   authorRequestRepository.findAll();
     }
 

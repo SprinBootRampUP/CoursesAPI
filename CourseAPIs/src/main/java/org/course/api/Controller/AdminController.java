@@ -17,8 +17,7 @@ import java.util.List;
 @RequestMapping("api/admin")
 public class AdminController {
 
-    @Autowired
-    private AuthorRequestRepository authorRequestRepository;
+
 
     @Autowired
     private AuthorRequestService authorRequestService;
@@ -39,7 +38,7 @@ public class AdminController {
     @GetMapping("/authorRequests")
     public ResponseEntity<ApiResponse> authorRequests(){
         try{
-            List<AuthorRequest> authorRequests= authorRequestService.authorRequests();
+            List<AuthorRequest> authorRequests= authorRequestService.getAuthorRequests();
             return  ResponseEntity.ok( new ApiResponse("Pending Author approvals" , authorRequests));
         } catch (Exception e) {
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).body( new ApiResponse( e.getMessage(),null));

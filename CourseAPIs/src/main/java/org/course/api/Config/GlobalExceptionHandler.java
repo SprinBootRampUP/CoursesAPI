@@ -1,5 +1,6 @@
 package org.course.api.Config;
 
+import com.mysql.cj.exceptions.DataTruncationException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -19,21 +20,39 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleConstraintViolation(ConstraintViolationException ex) {
 
         Map<String, String> errors = new HashMap<>();
+
+//        ex.getConstraintViolations().forEach(
+//                violation -> {
+//                    errors.put(violation.getPropertyPath().toString(), violation.getMessage());
+//                }
+//
+//        );
+
         ex.getConstraintViolations().forEach(
                 violation -> {
-                    errors.put(violation.getPropertyPath().toString(), violation.getMessage());
+                    errors.put(ex.getMessage(), violation.getMessage());
                 }
 
         );
-          return ResponseEntity.badRequest().body(errors);
+
+      //  System.out.println(ex.toString());
+
+          return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(errors);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleEnumViolation(IllegalArgumentException ex) {
 
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(
+                Map.of("error", "Invalid Course Status" )
+        );
+    }
+
+    @ExceptionHandler(DataTruncationException.class)
+    public ResponseEntity<Map<String, String>> handleEnumViolation(DataTruncationException ex) {
 
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(
-                Map.of("error", "Invalid Course Status")
+                Map.of("error", "Invalid Course Status" )
         );
     }
 

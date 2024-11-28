@@ -3,6 +3,7 @@ package org.course.api.Entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.Fetch;
@@ -20,6 +21,7 @@ public class Course extends  BaseEntity {
 
     @Column(unique = true)
     @Basic(optional = false)
+    @Size(max = 50, message = "Title must be less than or equal to 50 characters.")
     private String courseTitle;
 
     @NotNull
