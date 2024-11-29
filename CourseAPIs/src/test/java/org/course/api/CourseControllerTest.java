@@ -207,7 +207,6 @@ class CourseControllerTest {
                 .andExpect(status().isNotAcceptable())
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.error").value("Course with this title already submitted") );
-               // .andExpect(status().isForbidden());
 
     }
 

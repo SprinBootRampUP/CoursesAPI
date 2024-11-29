@@ -7,6 +7,7 @@ import org.course.api.Entity.ApprovalStatus;
 import org.course.api.Entity.CourseLevel;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -14,12 +15,12 @@ import java.util.List;
 @Accessors(chain = true)
 public class CourseDTO {
 
+    private Long id;
     private String courseTitle;
     private String description;
     private CourseLevel courseLevel;
-    private String price;
+    private BigDecimal price;
     private List<SectionDTO> sections;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private ApprovalStatus approvalStatus;
+
 
 }

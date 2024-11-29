@@ -17,7 +17,7 @@ public class Section extends BaseEntity {
 
 
     private String name;
-    private String orderNumber;
+    private Long orderNumber;
 
     @ManyToOne
     @JoinColumn(name = "course_id")

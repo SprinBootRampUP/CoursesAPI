@@ -71,7 +71,7 @@ public class GlobalExceptionHandler {
 
 //        System.out.println(ex.toString());
 //        System.out.println(ex.getCause().toString());
-        System.out.println("oooo"+ex.getMostSpecificCause().toString());
+        System.out.println(ex.getMostSpecificCause().toString());
 //        System.out.println(ex.getLocalizedMessage());
 
       String errorMessage = ex.getMostSpecificCause().getMessage();

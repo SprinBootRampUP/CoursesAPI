@@ -19,8 +19,11 @@ import org.mockito.MockedStatic;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,6 +32,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest
@@ -181,31 +187,3 @@ public class CourseServiceTest {
 
 
 }
-//
-//package org.course.api;
-//import org.course.api.Repository.CourseRepository;
-//import org.course.api.Service.CourseService;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.springframework.security.core.Authentication;
-//
-//public class CourseServiceTest {
-//
-//    @Mock
-//    private CourseRepository courseRepository;
-//
-//    @InjectMocks
-//    private CourseService courseService;
-//
-//    @Mock
-//    private Authentication authentication;
-//        @Test
-//void test(){
-//
-//    System.out.println("hi");
-//  //  courseService.CreateCourse();
-//}
-//
-//
-//}

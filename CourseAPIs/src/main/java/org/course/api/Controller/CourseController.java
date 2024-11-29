@@ -55,4 +55,19 @@ public class CourseController {
             courseService.approveCourse(courseId ,approvalStatus);
             return  ResponseEntity.ok( new ApiResponse("Courses Approved" , null));
     }
+
+
+
+    @GetMapping("/search")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse> searchCourses(@RequestParam(defaultValue = "0") int pageNo,
+                                                     @RequestParam(defaultValue = "25") int pageCount ,
+                                                     @RequestParam(defaultValue = "title") String sortBy ,
+                                                     @RequestParam(defaultValue = "ASC") String sortOrder,
+                                                     @RequestParam Long courseId ,
+                                                     ApprovalStatus approvalStatus){
+        courseService.approveCourse(courseId ,approvalStatus);
+        return  ResponseEntity.ok( new ApiResponse("Courses Approved" , null));
+    }
+
 }

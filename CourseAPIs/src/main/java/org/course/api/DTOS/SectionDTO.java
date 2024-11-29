@@ -11,7 +11,7 @@ import java.util.List;
 @Accessors(chain = true)
  public  class SectionDTO {
     private String name;
-    private String orderNumber;
+    private Long orderNumber;
    // private CourseDTO course;
     private List<LectureDTO> lectures;
 }

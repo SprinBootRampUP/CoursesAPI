@@ -21,6 +21,10 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
    // List<Course>  findByApprovedFalse();
     List<Course> findByApprovalStatus(ApprovalStatus approvalStatus);
 
+
     boolean existsByCourseTitle(String courseTitle);
+
+
+
 
 }

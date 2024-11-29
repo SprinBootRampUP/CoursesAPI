@@ -1,7 +1,11 @@
 package org.course.api.Service;
 
 import Utils.Utils;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
 import org.course.api.DTOS.CourseDTO;
 import org.course.api.DTOS.LectureDTO;
@@ -19,6 +23,8 @@ import java.util.stream.Collectors;
 @Service
 public class CourseService {
 
+    @Autowired
+    private EntityManager entityManager;
 
     @Autowired
     private CourseRepository courseRepository;
@@ -73,12 +79,10 @@ public class CourseService {
 
     @Transactional
     public  List<CourseDTO>  getCourses(){
-        List<Course> courses = courseRepository.findAll();
-
+        List<Course> courses = courseRepository.findByApprovalStatus(ApprovalStatus.APPROVED);
         return courses.stream()
                 .map(this::convertToCourseDTO)
                 .collect(Collectors.toList());
-
     }
 
     @Transactional
@@ -98,7 +102,58 @@ public class CourseService {
 
 
     public CourseDTO convertToCourseDTO(Course course) {
+        objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         return objectMapper.convertValue(course, CourseDTO.class);
+    }
+
+
+    public List<Course> getByCriteriaQuery(String search){
+
+        CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
+        CriteriaQuery<Course> criteriaQuery= criteriaBuilder.createQuery(Course.class);
+
+
+        Root<Course> courseRoot= criteriaQuery.from(Course.class);
+
+        Join<Course, Section> sectionJoin = courseRoot.join("sections", JoinType.LEFT);
+        Join<Section, Lecture> lectureJoin = sectionJoin.join("lectures", JoinType.LEFT);
+        Join<Lecture, Resource> resourceJoin = lectureJoin.join("resource", JoinType.LEFT);
+
+
+
+        List<Predicate> predicates = new ArrayList<>();
+
+
+        predicates.add(criteriaBuilder.like(
+                criteriaBuilder.lower(courseRoot.get("title")),
+                "%" + search.toLowerCase() + "%"));
+
+
+        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(courseRoot.get("description")),
+                "%" + search.toLowerCase() + "%"));
+
+
+        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(sectionJoin.get("name")),
+                "%" + search.toLowerCase() + "%"));
+
+        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(lectureJoin.get("name")),
+                "%" + search.toLowerCase() + "%"));
+
+        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(resourceJoin.get("name")),
+                "%" + search.toLowerCase() + "%"));
+
+        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(resourceJoin.get("url")),
+                "%" + search.toLowerCase() + "%"));
+
+
+        criteriaQuery.select(courseRoot)
+                .where(
+                        criteriaBuilder.or(
+                                predicates.toArray(new Predicate[0])
+                        )
+                );
+        return entityManager.createQuery(criteriaQuery).getResultList();
+
     }
 
 }
