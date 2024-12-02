@@ -3,11 +3,14 @@ package org.course.api.Repository;
 import jakarta.transaction.Transactional;
 import org.course.api.Entity.ApprovalStatus;
 import org.course.api.Entity.Course;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 @Repository
@@ -22,9 +25,9 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     List<Course> findByApprovalStatus(ApprovalStatus approvalStatus);
 
 
-    boolean existsByCourseTitle(String courseTitle);
+    //boolean existsByCourseTitle(String courseTitle);
 
-
+    Page<Course> findCourseByTitleContainingIgnoreCase(String searchTerm, Pageable pageable);
 
 
 }

@@ -31,6 +31,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
+import java.math.BigDecimal;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Collections;
 import java.util.List;
@@ -75,17 +76,17 @@ class CourseControllerTest {
 
         ResourceDTO resource =new ResourceDTO().setName("resource").setUrl("www.sharan.com").setSize(32L);
         LectureDTO lecture = new LectureDTO().setName("lecture1").setResource(resource);
-        SectionDTO section = new SectionDTO().setName("section1").setOrderNumber("1").setLectures(Collections.singletonList(lecture));
-         courseDTO1 = new CourseDTO().setCourseTitle("course1")
+        SectionDTO section = new SectionDTO().setName("section1").setOrderNumber(1L).setLectures(Collections.singletonList(lecture));
+         courseDTO1 = new CourseDTO().setTitle("course1")
                 .setCourseLevel(CourseLevel.BEGINNER)
                 .setDescription("description")
-                .setPrice("32,000")
+                .setPrice(BigDecimal.valueOf(32000))
                 .setSections(Collections.singletonList(section));
 
-        courseDTO2 = new CourseDTO().setCourseTitle("course2")
+        courseDTO2 = new CourseDTO().setTitle("course2")
                 .setCourseLevel(CourseLevel.BEGINNER)
                 .setDescription("description")
-                .setPrice("32,000")
+                .setPrice(BigDecimal.valueOf(32000))
                 .setSections(Collections.singletonList(section));
     }
 
@@ -128,7 +129,7 @@ class CourseControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     void createCourseReturnsForbiddenForUserRole() throws Exception {
-        CourseDTO courseDTO = new CourseDTO().setCourseTitle("course1");
+        CourseDTO courseDTO = new CourseDTO().setTitle("course1");
         mockMvc.perform(post("/api/course/create")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(courseDTO)))

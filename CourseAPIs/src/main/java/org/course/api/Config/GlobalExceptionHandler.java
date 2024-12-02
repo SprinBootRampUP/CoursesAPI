@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleEnumViolation(IllegalArgumentException ex) {
 
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(
-                Map.of("error", "Invalid Course Status" )
+                Map.of("error", ex.getLocalizedMessage() )
         );
     }
 

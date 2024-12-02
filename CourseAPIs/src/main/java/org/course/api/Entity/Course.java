@@ -24,7 +24,7 @@ public class Course extends  BaseEntity {
     @Column(unique = true)
     @Basic(optional = false)
     @Size(max = 50, message = "Title must be less than or equal to 50 characters.")
-    private String courseTitle;
+    private String title;
 
     @NotNull
     private String description;

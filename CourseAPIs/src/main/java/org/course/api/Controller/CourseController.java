@@ -3,16 +3,17 @@ package org.course.api.Controller;
 import jakarta.validation.ConstraintViolationException;
 import org.course.api.DTOS.ApiResponse;
 import org.course.api.DTOS.CourseDTO;
-import org.course.api.Entity.ApprovalStatus;
-import org.course.api.Entity.Course;
+import org.course.api.Entity.*;
 import org.course.api.Service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -59,15 +60,21 @@ public class CourseController {
 
 
     @GetMapping("/search")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse> searchCourses(@RequestParam(defaultValue = "0") int pageNo,
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER') or hasRole('AUTHOR')")
+    public List<CourseDTO> searchCourses(
+                                                     @RequestParam(defaultValue = " ") String searchTerm,
+                                                     @RequestParam(defaultValue = "0") int pageNo,
                                                      @RequestParam(defaultValue = "25") int pageCount ,
-                                                     @RequestParam(defaultValue = "title") String sortBy ,
-                                                     @RequestParam(defaultValue = "ASC") String sortOrder,
-                                                     @RequestParam Long courseId ,
-                                                     ApprovalStatus approvalStatus){
-        courseService.approveCourse(courseId ,approvalStatus);
-        return  ResponseEntity.ok( new ApiResponse("Courses Approved" , null));
+                                                     @RequestParam(required = false) BigDecimal priceFilter ,
+                                                     @RequestParam(required = false) CourseLevel courseLevel ,
+                                                     @RequestParam(defaultValue = "LESS_THAN") PriceFilterCondition priceFilterCondition ,
+                                                     @RequestParam(defaultValue = "TITLE") SortBy sortBy ,
+                                                     @RequestParam(defaultValue = "ASC") String sortOrder) {
+
+    // List<Course> courses=courseService.searchCourses(searchTerm pageNo,pageCount,sortBy,sortOrder);
+        List<CourseDTO> courses=courseService.searchCourses(searchTerm ,courseLevel,priceFilter,priceFilterCondition,pageNo,pageCount,sortBy,sortOrder);
+       System.out.println( "page" +courses);
+        return  courses;
     }
 
 }

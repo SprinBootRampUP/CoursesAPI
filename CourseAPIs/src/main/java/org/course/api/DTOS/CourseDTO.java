@@ -8,6 +8,7 @@ import org.course.api.Entity.CourseLevel;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -15,10 +16,11 @@ import java.util.List;
 @Accessors(chain = true)
 public class CourseDTO {
 
-    private Long id;
-    private String courseTitle;
+  //  private Long id;
+    private String title;
     private String description;
     private CourseLevel courseLevel;
+  private Date createdAt;
     private BigDecimal price;
     private List<SectionDTO> sections;
 

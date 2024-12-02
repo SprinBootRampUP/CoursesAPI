@@ -13,12 +13,19 @@ import org.course.api.DTOS.SectionDTO;
 import org.course.api.Entity.*;
 import org.course.api.Repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
 
 @Service
 public class CourseService {
@@ -36,7 +43,7 @@ public class CourseService {
     public void createCourse( CourseDTO courseDTO, Authentication authentication) {
 
         Course course = new Course();
-        course.setCourseTitle(courseDTO.getCourseTitle());
+        course.setTitle(courseDTO.getTitle());
       //  course.setCourseTitle(courseDTO.getCourseTitle()).setDescription("desc");
 
         course.setDescription(courseDTO.getDescription());
@@ -107,53 +114,75 @@ public class CourseService {
     }
 
 
-    public List<Course> getByCriteriaQuery(String search){
+    @Transactional
+    public List<CourseDTO> searchCourses(String searchTerm ,CourseLevel courseLevel,BigDecimal priceFilter , PriceFilterCondition  priceFilterCondition , int pageNo, int pageCount , SortBy sortBy, String sortOrder){
 
-        CriteriaBuilder criteriaBuilder= entityManager.getCriteriaBuilder();
-        CriteriaQuery<Course> criteriaQuery= criteriaBuilder.createQuery(Course.class);
-
-
-        Root<Course> courseRoot= criteriaQuery.from(Course.class);
-
-        Join<Course, Section> sectionJoin = courseRoot.join("sections", JoinType.LEFT);
-        Join<Section, Lecture> lectureJoin = sectionJoin.join("lectures", JoinType.LEFT);
-        Join<Lecture, Resource> resourceJoin = lectureJoin.join("resource", JoinType.LEFT);
-
-
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Course> query = cb.createQuery(Course.class);
+        Root<Course> courseRoot = query.from(Course.class);
 
         List<Predicate> predicates = new ArrayList<>();
 
 
-        predicates.add(criteriaBuilder.like(
-                criteriaBuilder.lower(courseRoot.get("title")),
-                "%" + search.toLowerCase() + "%"));
 
+        if (searchTerm != null && !searchTerm.isEmpty() && !searchTerm.equals(" ")) {
+            predicates.add(cb.like(cb.lower(courseRoot.get("title")), "%" + searchTerm.toLowerCase() + "%"));
 
-        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(courseRoot.get("description")),
-                "%" + search.toLowerCase() + "%"));
+        }
 
+        if(priceFilter != null){
 
-        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(sectionJoin.get("name")),
-                "%" + search.toLowerCase() + "%"));
+            if(priceFilterCondition.name().equalsIgnoreCase("LESS_THAN")){
+                predicates.add(cb.lessThan(courseRoot.get("price"), priceFilter));
+            } else {
+                predicates.add(cb.greaterThan(courseRoot.get("price"), priceFilter));
+            }
+        }
 
-        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(lectureJoin.get("name")),
-                "%" + search.toLowerCase() + "%"));
+        if(courseLevel!=null){
+            predicates.add(cb.equal(courseRoot.get("courseLevel"),courseLevel   ));
+        }
 
-        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(resourceJoin.get("name")),
-                "%" + search.toLowerCase() + "%"));
+        predicates.add(cb.equal(courseRoot.get("approvalStatus"), ApprovalStatus.APPROVED));
 
-        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(resourceJoin.get("url")),
-                "%" + search.toLowerCase() + "%"));
-
-
-        criteriaQuery.select(courseRoot)
+       query.select(courseRoot)
                 .where(
-                        criteriaBuilder.or(
+                        cb.and(
                                 predicates.toArray(new Predicate[0])
                         )
                 );
-        return entityManager.createQuery(criteriaQuery).getResultList();
+        Sort.Direction sortdirection= sortOrder.equalsIgnoreCase("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC;
+
+        String sortColumn = getSortColumn(sortBy);
+
+        query.orderBy(sortdirection == Sort.Direction.ASC
+                ? cb.asc(courseRoot.get(sortColumn))
+                : cb.desc(courseRoot.get( sortColumn )));
+
+        Pageable pageable = PageRequest.of(pageNo,pageCount ,Sort.by(sortdirection,sortColumn));
+
+        List<Course> courses = entityManager.createQuery(query)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
+
+        return courses.stream()
+                .map(this::convertToCourseDTO)
+                .collect(Collectors.toList());
+
 
     }
 
-}
+
+
+    private String getSortColumn(SortBy sortBy) {
+        return switch (sortBy) {
+            case DATE -> "createdAt";
+            case PRICE -> "price";
+            default -> "title";
+        };
+
+    }
+
+
+    }

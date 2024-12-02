@@ -1,4 +1,10 @@
+
 package org.course.api.Entity;
 
-public class SortBy {
+public enum SortBy {
+
+    TITLE,
+    DATE,
+    PRICE
+
 }
