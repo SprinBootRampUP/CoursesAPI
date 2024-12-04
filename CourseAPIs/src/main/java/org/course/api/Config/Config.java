@@ -27,7 +27,7 @@ public class Config {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests( request -> request
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs*/**" ,"/api-docs/**").permitAll()
-
+                        .requestMatchers( "/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

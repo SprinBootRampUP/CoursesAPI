@@ -77,7 +77,7 @@ public class CourseService {
         }
 
         course.setSections(sections);
-        course.setApprovalStatus(ApprovalStatus.PENDING);
+        course.setApprovalStatus(ApprovalStatus.APPROVED);
         Long  author_id = Utils.getIdFromToken(authentication);
         course.setAuthor_id(author_id);
         courseRepository.save(course);
@@ -115,7 +115,7 @@ public class CourseService {
 
 
     @Transactional
-    public List<CourseDTO> searchCourses(String searchTerm ,CourseLevel courseLevel,BigDecimal priceFilter , PriceFilterCondition  priceFilterCondition , int pageNo, int pageCount , SortBy sortBy, String sortOrder){
+    public List<CourseDTO> searchCourses(String searchTerm ,CourseLevel courseLevel,BigDecimal priceFilter , PriceFilterCondition  priceFilterCondition , int pageNo, int pageCount , SortBy sortBy, SortingOrder sortOrder){
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Course> query = cb.createQuery(Course.class);
@@ -151,7 +151,7 @@ public class CourseService {
                                 predicates.toArray(new Predicate[0])
                         )
                 );
-        Sort.Direction sortdirection= sortOrder.equalsIgnoreCase("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort.Direction sortdirection= sortOrder.name().equalsIgnoreCase("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
         String sortColumn = getSortColumn(sortBy);
 

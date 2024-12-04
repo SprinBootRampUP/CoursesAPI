@@ -69,7 +69,7 @@ public class CourseController {
                                                      @RequestParam(required = false) CourseLevel courseLevel ,
                                                      @RequestParam(defaultValue = "LESS_THAN") PriceFilterCondition priceFilterCondition ,
                                                      @RequestParam(defaultValue = "TITLE") SortBy sortBy ,
-                                                     @RequestParam(defaultValue = "ASC") String sortOrder) {
+                                                     @RequestParam(defaultValue = "ASC") SortingOrder sortOrder) {
 
     // List<Course> courses=courseService.searchCourses(searchTerm pageNo,pageCount,sortBy,sortOrder);
         List<CourseDTO> courses=courseService.searchCourses(searchTerm ,courseLevel,priceFilter,priceFilterCondition,pageNo,pageCount,sortBy,sortOrder);

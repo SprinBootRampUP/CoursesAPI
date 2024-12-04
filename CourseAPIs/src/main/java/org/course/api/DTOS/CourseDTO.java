@@ -1,5 +1,6 @@
 package org.course.api.DTOS;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -20,6 +21,8 @@ public class CourseDTO {
     private String title;
     private String description;
     private CourseLevel courseLevel;
+
+
   private Date createdAt;
     private BigDecimal price;
     private List<SectionDTO> sections;

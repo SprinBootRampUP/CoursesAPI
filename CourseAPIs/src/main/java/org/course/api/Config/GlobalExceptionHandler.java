@@ -21,19 +21,19 @@ public class GlobalExceptionHandler {
 
         Map<String, String> errors = new HashMap<>();
 
-//        ex.getConstraintViolations().forEach(
-//                violation -> {
-//                    errors.put(violation.getPropertyPath().toString(), violation.getMessage());
-//                }
-//
-//        );
-
         ex.getConstraintViolations().forEach(
                 violation -> {
-                    errors.put(ex.getMessage(), violation.getMessage());
+                    errors.put(violation.getPropertyPath().toString(), violation.getMessage());
                 }
 
         );
+
+//        ex.getConstraintViolations().forEach(
+//                violation -> {
+//                    errors.put(ex.getMessage(), violation.getMessage());
+//                }
+//
+//        );
 
       //  System.out.println(ex.toString());
 

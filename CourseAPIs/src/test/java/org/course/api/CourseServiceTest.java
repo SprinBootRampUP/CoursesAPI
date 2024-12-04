@@ -213,7 +213,7 @@ public class CourseServiceTest {
         int pageNo = 0;
         int pageCount = 10;
         SortBy sortBy = SortBy.DATE;
-        String sortOrder = "DESC";
+        //String sortOrder = "DESC";
 
         when(entityManager.getCriteriaBuilder()).thenReturn(criteriaBuilder);
         when(criteriaBuilder.createQuery(Course.class)).thenReturn(criteriaQuery);
@@ -234,7 +234,7 @@ public class CourseServiceTest {
                     }
                     return null;
                 });
-        List<CourseDTO> result = courseService.searchCourses(searchTerm, courseLevel, priceFilter, priceFilterCondition, pageNo, pageCount, sortBy, sortOrder);
+        List<CourseDTO> result = courseService.searchCourses(searchTerm, courseLevel, priceFilter, priceFilterCondition, pageNo, pageCount, sortBy, SortingOrder.DESC);
 
         assertNotNull(result);
         assertEquals(2, result.size());
@@ -273,7 +273,7 @@ public class CourseServiceTest {
                     return null;
                 });
 
-        doThrow(new IllegalArgumentException("courseLevel")).when(courseService).searchCourses( searchTerm, eq(courseLevel), eq(priceFilter), eq(priceFilterCondition), eq(pageNo), eq(pageCount), eq(sortBy), eq(sortOrder));
+        doThrow(new IllegalArgumentException("courseLevel")).when(courseService).searchCourses( searchTerm, eq(courseLevel), eq(priceFilter), eq(priceFilterCondition), eq(pageNo), eq(pageCount), eq(sortBy), eq(SortingOrder.ASC));
 
 //
 //        IllegalArgumentException exception=  assertThrows( IllegalArgumentException.class ,() ->{
