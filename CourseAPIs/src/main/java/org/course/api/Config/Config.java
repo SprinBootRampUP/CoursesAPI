@@ -28,6 +28,7 @@ public class Config {
                 .authorizeHttpRequests( request -> request
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs*/**" ,"/api-docs/**").permitAll()
                         .requestMatchers( "/actuator/**").permitAll()
+                        .requestMatchers("/api/course/ping").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
@@ -42,7 +43,7 @@ public class Config {
     @Bean
     public JwtDecoder  jwtDecoder(){
         NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withJwkSetUri(
-                "http://localhost:3006/oauth2/jwks"
+                "http://localhost:30006/oauth2/jwks"
         ).build();
 
 

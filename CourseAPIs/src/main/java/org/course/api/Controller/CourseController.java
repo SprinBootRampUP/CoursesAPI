@@ -31,6 +31,10 @@ public class CourseController {
             return  ResponseEntity.ok( new ApiResponse("Courses Created Successfully" , null));
     }
 
+    @GetMapping("/ping")
+    public String ping(){
+        return "HEllO form API server";
+    }
 
 
     @GetMapping
