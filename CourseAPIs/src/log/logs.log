@@ -24,3 +24,7 @@
 04-12-2024 11:18:05.023 [main] INFO  org.course.api.Main.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
 04-12-2024 11:18:46.933 [main] INFO  org.course.api.Main.logStarted - Started Main in 43.41 seconds (process running for 45.253)
 04-12-2024 11:18:47.112 [main] INFO  org.course.api.Main.main - Sample Log
+09-12-2024 02:45:59.110 [main] INFO  org.course.api.Main.logStarting - Starting Main using Java 17.0.12 with PID 15684 (D:\CourseAPIs\CourseAPIs\target\classes started by vsharan in D:\CourseAPIs)
+09-12-2024 02:45:59.115 [main] INFO  org.course.api.Main.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+09-12-2024 02:46:19.697 [main] INFO  org.course.api.Main.logStarted - Started Main in 21.85 seconds (process running for 23.339)
+09-12-2024 02:46:19.847 [main] INFO  org.course.api.Main.main - Sample Log
